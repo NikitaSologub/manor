@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <context:annotation-config/>
+
+    <bean name="hr-office" class="by.itacademy.sologub.model.Workshop" autowire="byName">
+        <qualifier value="dwarf-hr"/>
+        <constructor-arg name="id" value="1000"/>
+        <constructor-arg name="groupTitle" value="Отдел кадров"/>
+        <property name="workers" ref="hr-workers"/>
+    </bean>
+
+    <util:set id="hr-workers" value-type="by.itacademy.sologub.model.Worker">
+        <ref bean="1"/>
+        <ref bean="2"/>
+    </util:set>
+
+    <bean id="1" class="by.itacademy.sologub.model.Worker" autowire-candidate="true">
+        <qualifier value="dwarf-hr"/>
+        <constructor-arg name="id" value="77"/>
+        <constructor-arg name="name" value="Торин"/>
+        <constructor-arg name="sureName" value="Дубощит"/>
+    </bean>
+
+    <bean id="2" class="by.itacademy.sologub.model.Worker" autowire-candidate="true">
+        <qualifier value="dwarf-warrior"/>
+        <constructor-arg name="id" value="55"/>
+        <constructor-arg name="name" value="Трайн"/>
+        <constructor-arg name="sureName" value="Боров"/>
+    </bean>
+
+</beans>
