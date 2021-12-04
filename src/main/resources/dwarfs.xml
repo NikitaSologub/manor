@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:c="http://www.springframework.org/schema/c" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+       default-init-method="init" default-destroy-method="destroy" default-autowire="byType">
+
+    <context:property-placeholder location="kili.properties" file-encoding="UTF-8"/>
+
+    <bean id="torin" class="by.itacademy.sologub.model.Worker">
+        <qualifier value="dwarf-torin"/>
+        <constructor-arg index="0" value="1"/>
+        <constructor-arg index="1" value="Торин"/>
+        <constructor-arg index="2" value="Дубощит"/>
+    </bean>
+    <bean id="oin" class="by.itacademy.sologub.model.Worker">
+        <constructor-arg name="id" value="2"/>
+        <constructor-arg name="name" value="Оин"/>
+        <constructor-arg name="sureName" value="Шустрый"/>
+    </bean>
+    <bean id="gloin" class="by.itacademy.sologub.model.Worker" c:id="3" c:name="Глоин" c:sureName="Быстрый"/>
+    <bean id="bifur" class="by.itacademy.sologub.model.Worker">
+        <property name="id" value="4"/>
+        <property name="name" value="Бифур"/>
+        <property name="sureName" value="Голодный"/>
+    </bean>
+    <bean id="bofur" class="by.itacademy.sologub.model.Worker" p:id="1" p:name="Бофур" p:sureName="Расторопный"/>
+    <bean id="bombur" class="by.itacademy.sologub.model.Worker">
+        <constructor-arg name="id" value="6"/>
+        <property name="name" value="Бомбур"/>
+        <property name="sureName" value="Жирный"/>
+    </bean>
+    <bean id="owner" class="by.itacademy.sologub.model.Worker" c:_0="7" p:name="Балин" p:sureName="Коренастый"/>
+    <bean id="dvalin" class="by.itacademy.sologub.model.Worker" p:id="8" p:name="Двалин" p:sureName="Стойкий"/>
+    <bean id="dori" class="by.itacademy.sologub.model.Worker" p:id="9" p:name="Дори" p:sureName="Рассеяный"
+          primary="true"/>
+    <bean id="nori" class="by.itacademy.sologub.model.Jeweler" p:id="10" p:name="Нори" p:sureName="Весёлый"
+          init-method="startJeweler" destroy-method="finishJeweler"/>
+    <bean id="ori" class="by.itacademy.sologub.model.Worker" p:id="11" p:name="Ори" p:sureName="Шумный"/>
+    <bean id="fili" class="by.itacademy.sologub.model.Worker" p:id="12" p:name="Фили"
+          p:sureName="тоже #{ori.sureName}"/>
+    <bean id="kili" class="by.itacademy.sologub.model.Worker">
+        <constructor-arg name="id" value="${kili.id}"/>
+        <constructor-arg name="name" value="${kili.name}"/>
+        <constructor-arg name="sureName" value="${kili.surename}"/>
+    </bean>
+
+    <util:set id="workersSet" value-type="by.itacademy.sologub.model.Worker">
+        <ref bean="bofur"/>
+        <ref bean="bombur"/>
+    </util:set>
+    <bean id="smithsSet" class="org.springframework.beans.factory.config.SetFactoryBean">
+        <property name="sourceSet">
+            <set>
+                <ref bean="oin"/>
+                <ref bean="gloin"/>
+            </set>
+        </property>
+    </bean>
+    <util:set id="tradersSet" value-type="by.itacademy.sologub.model.Worker">
+        <ref bean="dvalin"/>
+    </util:set>
+    <util:set id="jewelersSet" value-type="by.itacademy.sologub.model.Worker">
+        <ref bean="nori"/>
+        <ref bean="ori"/>
+    </util:set>
+    <util:set id="horseHolders" value-type="by.itacademy.sologub.model.Worker">
+        <ref bean="fili"/>
+        <ref bean="kili"/>
+    </util:set>
+
+    <bean name="workshop1" class="by.itacademy.sologub.model.Workshop">
+        <constructor-arg name="id" value="973"/>
+        <constructor-arg name="groupTitle" value="Кузнечный цех под Одинокой горой"/>
+        <property name="owner" ref="torin"/>
+        <property name="workers" ref="smithsSet"/>
+    </bean>
+    <bean name="workshop2" class="by.itacademy.sologub.model.Workshop">
+        <constructor-arg name="id" value="#{workshop1.id - 7}"/>
+        <constructor-arg name="groupTitle" value="Стловая под Одинокой горой"/>
+        <property name="owner" ref="bifur"/>
+        <property name="workers" ref="workersSet"/>
+    </bean>
+    <bean name="workshop3" class="by.itacademy.sologub.model.Workshop" autowire="byName">
+        <constructor-arg name="id" value="#{workshop2.id - 15}"/>
+        <constructor-arg name="groupTitle" value="Торговая лавка под Одинокой горой"/>
+        <property name="workers" ref="tradersSet"/>
+    </bean>
+    <bean name="workshop4" class="by.itacademy.sologub.model.Workshop">
+        <constructor-arg name="id" value="#{new java.util.Random().nextInt(200)}" type="int"/>
+        <constructor-arg name="groupTitle" value="Ювелирная мастерская под Одинокой горой"/>
+        <property name="workers" ref="jewelersSet"/>
+    </bean>
+    <bean name="workshop5" class="by.itacademy.sologub.model.Workshop" autowire="byType">
+        <constructor-arg name="id" value="#{T(by.itacademy.sologub.util.UtilHelper).INT_CONSTANT}"/>
+        <constructor-arg name="groupTitle" value="Конюшня под Одинокой горой"/>
+        <property name="owner" ref="fili"/>
+        <property name="workers" ref="horseHolders"/>
+    </bean>
+
+</beans>    <!--Бифур, Бофур, Бомбур, Оин, Глоин, Балин, Двалин, Дори, Нори, Ори, Фили и Кили-->
