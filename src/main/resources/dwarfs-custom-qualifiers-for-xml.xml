@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+       default-autowire="byName">
+
+    <context:annotation-config/>
+
+    <bean name="smithy" class="by.itacademy.sologub.model.Smithy" p:title="Кузница"/>
+    <bean name="jewelryRepairShop" class="by.itacademy.sologub.model.JewelryRepairShop" p:title="Ювелирная"/>
+    <bean name="tradeShop" class="by.itacademy.sologub.model.TradeShop" p:title="Бакалея"/>
+
+    <bean id="director" class="by.itacademy.sologub.model.Worker" autowire-candidate="false">
+        <constructor-arg name="id" value="77"/>
+        <constructor-arg name="name" value="Торин"/>
+        <constructor-arg name="sureName" value="Дубощит"/>
+    </bean>
+    <bean id="specialist1" class="by.itacademy.sologub.model.Seller" autowire-candidate="true">
+        <constructor-arg name="id" value="25"/>
+        <constructor-arg name="name" value="Бодмин"/>
+        <constructor-arg name="sureName" value="Продавайккин"/>
+    </bean>
+    <bean id="specialist2" class="by.itacademy.sologub.model.Smith" autowire-candidate="true">
+        <constructor-arg name="id" value="15"/>
+        <constructor-arg name="name" value="Ревис"/>
+        <constructor-arg name="sureName" value="Раздувайкин"/>
+    </bean>
+    <bean id="specialist3" class="by.itacademy.sologub.model.Jeweler" autowire-candidate="true">
+        <constructor-arg name="id" value="47"/>
+        <constructor-arg name="name" value="Карпер"/>
+        <constructor-arg name="sureName" value="Точилкин"/>
+    </bean>
+</beans>
